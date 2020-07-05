@@ -1,0 +1,105 @@
+   //Symfony controller example. AddProduct is a method for add products into Database.
+
+   /**
+     *
+     * @Route("/addProduct", name="addProduct")
+     *
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function addProductAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $params = $request->request->all();
+        $files = $request->files->get('product_images');
+        $mainImage = "";
+
+        /** @var Product $product */
+        $product = new Product();
+        //Create object
+        $product->setName($params['name']);
+        $product->setDescription($params['description']);
+        $product->setCreateAt(new \DateTime('now'));
+        $product->setMinPurchaseUnit($params['minPurchaseUnit']);
+        $product->setStock($params['stock']);
+        $product->setStatus('Activo');
+        $product->setPriceCost($params['costPrice']);
+        $product->setPriceImpIncl($params['priceImpIncl']);
+        $product->setPriceImpExcl($params['priceImpExcl']);
+        $product->setEanCode($params['eanCode']);
+        $product->setStickyLabel($params['sticky']);
+        $product->setReference($params['product_reference']);
+
+        //set Taxes
+        if (array_key_exists('taxes', $params)) {
+            if ($params['taxes'] != 0) {
+                $taxes = $this->getReference($params['taxes'], "\Taxes");
+                foreach ($taxes as $tax) {
+                    $product->setTaxes($tax);
+                }
+            }
+        }
+        //set providers
+        if (array_key_exists('providers', $params)) {
+            if ($params['providers'] != 0) {
+                $providers = $this->getReference($params['providers'], "\Provider");
+                foreach ($providers as $prov) {
+                    $product->setProvider($prov);
+                }
+            }
+        }
+        //if specific price is !null, add to product.
+        if (array_key_exists('id_specific_price', $params)) {
+            $sp_price = $this->getReference($params['id_specific_price'], "\SpecificPrice");
+            foreach ($sp_price as $sp) {
+                $product->addSpecificPrice($sp);
+            }
+        }
+
+        //if brand is !null, add to product.
+        if (array_key_exists('brand', $params)) {
+        //set Brand
+        $brand = $this->getReference($params['brand'], "\Brand");
+        foreach ($brand as $br) {
+            $product->setBrand($br);
+        }
+        }
+
+        //get all categoy references
+        if (array_key_exists('cat_select', $params)) {
+            $categories = $this->getReference($params['cat_select'], "\Category");
+            foreach ($categories as $cat) {
+                $product->addCategory($cat);
+            }
+        }
+
+        //get all attributes references
+        if (array_key_exists('attr_select', $params)) {
+            $attributes = $this->getReference($params['attr_select'], "\Attribute");
+            foreach ($attributes as $attr) {
+                $product->addAttribute($attr);
+            }
+        }
+        //if exist files, add to product.
+        if (!empty($files)) {
+            /**
+             * @var $file UploadedFile
+             */
+            foreach ($files as $file) {
+                /** @var Image $sp_price */
+                $image = new Image();
+                $image->setFilename($file->getClientOriginalName());
+                $image->setImageFile($file);
+                $image->setProduct($product);
+                $em->persist($image);
+                if ($mainImage == "") {
+                    $mainImage = $file->getClientOriginalName();
+                    $product->setMainPicture($image->getFilename());
+                }
+            }
+        }
+        $em->persist($product);
+        $em->flush();
+        return $this->redirectToRoute('productList');
+    }

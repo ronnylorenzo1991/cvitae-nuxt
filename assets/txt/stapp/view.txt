@@ -1,0 +1,218 @@
+//symfony twig apps view example for shop cart.
+
+//layout for product frontend
+{% extends 'AppBundle:_layouts:base.html.twig' %}
+
+{% block body %}
+    <main class="main">
+        <nav aria-label="breadcrumb" class="breadcrumb-nav mb-1">
+            <div class="container">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html"><i class="icon-home"></i></a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                </ol>
+            </div><!-- End .container -->
+        </nav>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="cart-table-container">
+                        <table class="table table-cart">
+                            <thead>
+                            <tr>
+                                <th class="product-col">Product</th>
+                                <th class="price-col">Price</th>
+                                <th class="qty-col">Qty</th>
+                                <th>Subtotal</th>
+                                <th>Tax</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for movement in shopCart.movements %}
+                                <tr class="product-row">
+                                    <td class="product-col">
+                                        <figure class="product-image-container">
+                                            <a href="product.html" class="product-image">
+                                                <img src="{{ asset('uploads/app/images/uploads/images/products/')~ movement.product.mainpicture }}"
+                                                     alt="product">
+                                            </a>
+                                        </figure>
+                                        <h2 class="product-title">
+                                            <a href="product.html">{{ movement.product.name }}</a>
+                                        </h2>
+                                    </td>
+                                    <td>${{ movement.product.priceImpExcl }}</td>
+                                    <td>
+                                        <input class="vertical-quantity form-control movement-quantity" type="text"
+                                               id="input-quantity-{{ movement.id }}"
+                                               value="{{ movement.quantity }}"
+                                               data-original_value="{{ movement.quantity }} "
+                                               data-idmovement="{{ movement.id }}">
+                                    </td>
+                                    <td id="subtotal-{{ movement.id }}">{{ movement.product.priceImpExcl * movement.quantity }}</td>
+
+                                    <td id="tax-total-products-{{ movement.id }}" >{{ movement.product.taxValue * movement.quantity }}</td>
+                                </tr>
+                                <tr class="product-action-row">
+                                    <td colspan="4" class="clearfix">
+                                        {#<div class="float-left">#}
+                                            {#<a href="#" class="btn-move">Move to Wishlistsssaasas</a>#}
+                                        {#</div><!-- End .float-left -->#}
+                                        <div class="float-right">
+                                            <a href="#" id="btn-edit-{{ movement.id }}" title="Edit product"
+                                               class="btn-edit" onclick="updateQuantity({{ movement.id }})"><span
+                                                        class="sr-only">Edit</span><i
+                                                        id="btn-edit-icon-{{ movement.id }}" class="icon-ok"></i></a>
+
+                                            <a href="{{ path('removeProduct')}}?id={{  movement.id }}"
+                                               title="Remove product" class="btn-remove"><span
+                                                        class="sr-only">Remove</span></a>
+                                        </div><!-- End .float-right -->
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td colspan="4" class="clearfix">
+                                    {#<div class="float-left">#}
+                                        {#<a href="category.html" class="btn btn-outline-secondary">Continue Shopping</a>#}
+                                    {#</div><!-- End .float-left -->#}
+
+                                    <div class="float-right">
+                                        {% if shopCart.movements.count < 1 %}
+                                            <button class="btn btn-outline-secondary btn-clear-cart" disabled >Clear Shopping
+                                                Cart</button>
+                                        {% else %}
+                                            <a href="{{ path('removeAllProductFromShopCart') }}" class="btn btn-outline-secondary btn-clear-cart" >Clear Shopping
+                                                Cart</a>
+                                        {% endif %}
+
+                                    </div><!-- End .float-right -->
+                                </td>
+                            </tr>
+                            </tfoot>
+                        </table>
+                    </div><!-- End .cart-table-container -->
+
+                    <div class="cart-discount">
+                        <h4>Apply Discount Code</h4>
+                        <form action="#">
+                            <div class="input-group">
+                                <input type="text" class="form-control form-control-sm"
+                                       placeholder="Enter discount code" required>
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-primary" type="submit" disabled >Apply Discount</button>
+                                </div>
+                            </div><!-- End .input-group -->
+                        </form>
+                    </div><!-- End .cart-discount -->
+                </div><!-- End .col-lg-8 -->
+
+                <div class="col-lg-4">
+                    <div class="cart-summary">
+                        <h3>Summary</h3>
+
+                        <table class="table table-totals">
+                            <tbody>
+                            <tr>
+                                <td>Subtotal</td>
+                                <td id="shopcart-subtotal">${{ shopCart.subtotal }}</td>
+                            </tr>
+
+                            <tr>
+                                <td>Tax</td>
+                                <td id="shopcart-totaltax">${{ shopCart.totalTax }}</td>
+                            </tr>
+                            </tbody>
+                            <tfoot>
+                            <tr>
+                                <td>Order Total</td>
+                                <td id="shopcart-totalorder">${{ shopCart.subtotal + shopCart.totalTax }}</td>
+                            </tr>
+                            </tfoot>
+                        </table>
+
+                        <div class="checkout-methods">
+                            <a href="{{ path('getPurchase') }}" class="btn btn-block btn-sm btn-primary">Go to Checkout</a>
+                            <a href="#" class="btn btn-link btn-block">Check Out with Multiple Addresses</a>
+                        </div><!-- End .checkout-methods -->
+                    </div><!-- End .cart-summary -->
+                </div><!-- End .col-lg-4 -->
+            </div><!-- End .row -->
+        </div><!-- End .container -->
+
+        <div class="mb-6"></div><!-- margin -->
+
+    </main><!-- End .main -->
+{% endblock %}
+
+
+{% block innerJavascripts %}
+
+    <script type="text/javascript">
+
+        function updateQuantity(idMovement) {
+
+            var inputMovement = $('#input-quantity-' + idMovement);
+            var quantity = inputMovement.val();
+
+            if (Number(inputMovement.val()) !== Number(inputMovement.data('original_value'))) {
+
+                $.ajax({
+                    url: Routing.generate('updateMovement', {idMovement: idMovement, quantity: quantity}),
+                    type: 'POST',
+                    dataType: 'json'
+                }).done(function (response) {
+                    inputMovement.data('original_value', quantity);
+
+                    var icon = $('#btn-edit-icon-' + idMovement);
+                    icon.addClass('icon-ok');
+                    icon.removeClass('icon-pencil');
+
+                    var subtotal = $('#shopcart-subtotal');
+                    subtotal.text(response.subtotal);
+
+                    var totalTax = $('#shopcart-totaltax');
+                    totalTax.text(response.totalTax);
+
+                    var totalOrder = $('#shopcart-totalorder' );
+                    totalOrder.text(response.subtotal + response.totalTax);
+
+                    var subtotalMovement = $('#subtotal-' + idMovement );
+                    subtotalMovement.text(response.price * quantity);
+
+                    var taxTotalProducts = $('#tax-total-products-' + idMovement );
+                    taxTotalProducts.text(response.tax * quantity);
+
+                });
+            }
+
+        }
+
+        var inputsQuantity = $('.movement-quantity');
+
+        for (var i = 0; i < inputsQuantity.length; i++) {
+
+            inputsQuantity.eq(i).on('change', function (e) {
+
+                    var icon = $('#btn-edit-icon-' + $(this).data('idmovement'));
+
+                    if (Number($(this).val()) === Number($(this).data('original_value'))) {
+
+                        icon.addClass('icon-ok');
+                        icon.removeClass('icon-pencil');
+
+                    } else {
+
+                        icon.removeClass('icon-ok');
+                        icon.addClass('icon-pencil');
+
+                    }
+                }
+            )
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,595 @@
+//Complete Vue.js view for laravel app using bootstrap 4 AdminLTE template.
+<template>
+    <main class="main">
+        <!-- Breadcrumb -->
+        <ol class="breadcrumb">
+            <h3 v-text="view"></h3>
+        </ol>
+        <div class="container-fluid">
+            <!-- Ejemplo de tabla Listado -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-tools float-left">
+                        <button type="button" class="btn btn-success" @click="openModal('insert')">
+                            <i class="fa fa-plus-circle"></i>&nbsp;Nuevo
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <div class="col-md-12">
+                            <div class="input-group">
+                                <select class="form-control col-md-2" v-model="criteria">
+                                    <option value="">Seleccione un parametro</option>
+                                    <option value="name">Nombre</option>
+                                </select>&nbsp
+                                <select class="form-control col-md-2" v-model="stateId">
+                                    <option value="">Cualquier Provincia</option>
+                                    <option v-for="state in arrayState" :key="state.id"
+                                            :value="state.id" v-text="state.name"
+                                            @click="$getCitiesByState(state.id)"></option>
+                                </select>&nbsp
+                                <select class="form-control col-md-2" v-model="cityId">
+                                    <option value="">Cualquier Municipio</option>
+                                    <option v-for="city in arrayCity" :key="city.id"
+                                            :value="city.id" v-text="city.name"
+                                            @click="$getTownsByCity(city.id)"></option>
+                                </select>&nbsp
+                                <select class="form-control col-md-2" v-model="townId">
+                                    <option value="">Cualquier Barrio</option>
+                                    <option v-for="town in arrayTown" :key="town.id"
+                                            :value="town.id" v-text="town.name"></option>
+                                </select>&nbsp
+
+                                <input type="text" @keyup.enter="list(1,find,criteria,unitId,stateId)" id="texto"
+                                       v-model="find"
+                                       class="form-control col-md-6"
+                                       placeholder="Texto a buscar">
+                                <button type="submit" @click="list(1,find,criteria,stateId,cityId,townId)"
+                                        class="btn btn-secondary"><i
+                                        class="fa fa-search"></i> Buscar
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                    </div>
+                    <table class="table table-hover">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Opciones</th>
+                            <th>Logo</th>
+                            <th>
+                                <ul class="ul-list-items">
+                                    <li>Nombre</li>
+                                    <li class="push">
+                                        <button type="button" class="filter-button mr-auto" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false"><i
+                                                class="fa fa-caret-down"></i>
+                                        </button>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                            <input type="text" @keypress="filterTable($event)">
+                                        </div>
+                                    </li>
+                                </ul>
+                            </th>
+                            <th>Provincia</th>
+                            <th>Municipo</th>
+                            <th>Reparto</th>
+                            <th>Estado</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr v-if="arrayTeam.length < 1">
+                            <td align="center" colspan="5"> no hay elementos que mostrar</td>
+                        </tr>
+                        <tr class="filters">
+                            <td></td>
+                            <td></td>
+                            <td><input class="form-control" type="text" placeholder="buscar"></td>
+                            <td><input class="form-control" type="text" placeholder="buscar"></td>
+                            <td><input class="form-control" type="text" placeholder="buscar"></td>
+                            <td><input class="form-control" type="text" placeholder="buscar"></td>
+                            <td></td>
+                        </tr>
+                        <tr :class="{'table-danger':!team.condition}" v-for="team in arrayTeam" :key="team.id">
+                            <td width="100">
+                                <ul class="ul-list-items">
+                                    <li>
+                                        <button type="button" class="btn btn-warning btn-sm"
+                                                @click="openModal('update', team)">
+                                            <i class="fa fa-edit"></i>
+                                        </button> &nbsp;
+                                    </li>
+                                    <li>
+                                        <template v-if="team.condition">
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                    @click="$on_off(team.id, '0',element)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </template>
+
+                                        <template v-else>
+                                            <button type="button" class="btn btn-info btn-sm"
+                                                    @click="$on_off(team.id, '1',element)">
+                                                <i class="fa fa-check"></i>
+                                            </button>
+                                        </template>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td><img :src="team.logo[0].url" width="60" height="50"></td>
+                            <td v-text="team.name"></td>
+                            <td v-text="team.state.name"></td>
+                            <td v-text="team.city.name"></td>
+                            <td v-text="team.town.name"></td>
+                            <td>
+                                <div v-if="team.condition==1">
+                                    <span class="badge badge-success">Activo</span>
+                                </div>
+                                <div v-else>
+                                    <span class="badge badge-danger">Inactivo</span>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item" :class="[pagination.currentPage == 1 ? 'disabled' : '']">
+                                <a class="page-link" href="#"
+                                   @click.prevent="changePage(pagination.currentPage - 1,find,criteria)">Anterior</a>
+                            </li>
+                            <li class="page-item" v-for="page in pagesNumber" :key="page"
+                                :class="[page == isActived ? 'active' : '']">
+                                <a class="page-link" href="#" @click.prevent="changePage(page,find,criteria)"
+                                   v-text="page"></a>
+                            </li>
+                            <li class="page-item"
+                                :class="[pagination.currentPage == pagination.lastPage ? 'disabled' : '']">
+                                <a class="page-link" href="#"
+                                   @click.prevent="changePage(pagination.currentPage + 1,find,criteria)">Siguiente</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- Fin ejemplo de tabla Listado -->
+        </div>
+        <!--Inicio del modal agregar/actualizar-->
+        <div class="modal fade" tabindex="-1" :class="{'show-modal':modal}" role="dialog" aria-labelledby="myModalLabel"
+             style="display: none;overflow-y: scroll;" aria-hidden="true">
+            <div class="modal-dialog modal-primary modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" v-text="modalTitle"></h4>
+                        <button type="button" class="close" @click="closeModal" aria-label="Close">
+                            <span aria-hidden="true">×</span>
+                        </button>
+                    </div>
+
+                    <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                        <div class="modal-body">
+                            <h4>Datos del Equipo</h4>
+                            <br>
+                            <div class="form-group row">
+                                <label class="col-md-3 form-control-label">Nombre</label>
+                                <div class="col-md-9">
+                                    <input type="text" v-model="name" class="form-control" id="name"
+                                           placeholder="Inserte el Nombre" required>
+                                    <span id="error_name" style="color:#ff2f27"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 form-control-label">Provincia</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" v-model="stateId" id="state">
+                                        <option value="">Seleccionar Provincia</option>
+                                        <option v-for="state in arrayState" :key="state.id"
+                                                :value="state.id" v-text="state.name"
+                                                @click="$getCitiesByState(state.id);arrayTown=[];townId='';cityId='';"></option>
+                                    </select>
+                                    <span id="error_state" style="color:#ff2f27"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 form-control-label">Municipio</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" v-model="cityId" id="city">
+                                        <option value="">Seleccionar Municipio</option>
+                                        <option v-for="city in arrayCity" :key="city.id"
+                                                :value="city.id" v-text="city.name"
+                                                @click="$getTownsByCity(city.id)"
+                                                @change="arrayTown=[];townId=''"></option>
+                                    </select>
+                                    <span id="error_city" style="color:#ff2f27"></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-md-3 form-control-label">Barrio</label>
+                                <div class="col-md-9">
+                                    <select class="form-control" v-model="townId" id="town" required>
+                                        <option value="">Seleccionar Barrio</option>
+                                        <option v-for="town in arrayTown" :key="town.id"
+                                                :value="town.id" v-text="town.name"></option>
+                                    </select>
+                                    <span id="error_town" style="color:#ff2f27"></span>
+                                </div>
+                            </div>
+                            <hr>
+                            <h4>Imágenes</h4>
+                            <br>
+                            <div class="form-group" :class="{'show-photo-uploader':arrayPhotos.length}">
+
+                                <input type="file" name="file" id="file" ref="file">
+                                <span id="error_file" style="color:#ff2f27"></span>
+                            </div>
+                            <template v-if="actionType == 2">
+                                <div class="form-group row">
+                                    <div class="col-md-2" v-for="(image,i) in arrayPhotos">
+                                        <a href="#" class="btn btn-danger btn-xs" style="position: absolute"
+                                           @click="$deleteImage(image,i)"><i
+                                                class="fas fa-trash-alt"></i></a>
+                                        <img class="img-thumbnail" :src="image.url">
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" @click="closeModal">Cerrar</button>
+                            <button type="button" class="btn btn-primary" v-if="actionType==1" @click="insert()">Guardar
+                            </button>
+                            <button type="button" class="btn btn-primary" v-if="actionType==2" @click="update()">
+                                Actualizar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!--Fin del modal-->
+    </main>
+    <!-- /Fin del contenido principal -->
+</template>
+
+<script>
+    export default {
+        data() {
+            return {
+                view: 'Equipos',
+                element: 'team',
+                name: '',
+                id: '',
+                condition: '',
+                arrayTeam: [],
+                arrayState: [],
+                arrayCity: [],
+                arrayTown: [],
+                arrayPhotos: [],
+                arrayForDeletePic: [],
+                stateId: '',
+                cityId: '',
+                townId: '',
+                modal: 0,
+                modalTitle: '',
+                actionType: 0,
+                pagination: {
+                    'total': 0,
+                    'currentPage': 0,
+                    'perPage': 0,
+                    'lastPage': 0,
+                    'from': 0,
+                    'to': 0
+                },
+                offset: 3,
+                criteria: '',
+                find: ''
+            }
+        },
+        computed: {
+            isActived: function () {
+                return this.pagination.currentPage;
+            },
+            pagesNumber: function () {
+                if (!this.pagination.to) {
+                    return [];
+                }
+
+                var from = this.pagination.currentPage - this.offset;
+                if (from < 1) {
+                    from = 1;
+                }
+
+                var to = from + (this.offset * 2);
+                if (to >= this.pagination.lastPage) {
+                    to = this.pagination.lastPage;
+                }
+
+                var pagesArray = [];
+                while (from <= to) {
+                    pagesArray.push(from);
+                    from++;
+                }
+                return pagesArray;
+
+            }
+
+        },
+
+        methods: {
+
+            list(page, find, criteria, stateId = null, cityId = null, townId = null) {
+                let me = this;
+                var url = '/team/list?page=' + page + '&find=' + find + '&criteria=' + criteria + '&stateId=' + stateId + '&cityId=' + cityId + '&townId=' + townId;
+                axios.get(url)
+
+                    .then(function (response) {
+                        var respuesta = response.data;
+
+                        me.arrayTeam = respuesta.teams;
+                        me.pagination = respuesta.pagination;
+                        me.$showMessageToast('success', 'cargados');
+                    })
+                    .catch(function (error) {
+                        me.$showMessageToast('error', 'cargar');
+                        console.log(error);
+                    });
+            },
+            filterTable($event, field) {
+                if ($event.charCode === 13) {
+                    // this.team.filter(function);
+                }
+            },
+            //insert method
+            insert() {
+                let me = this;
+                let params = [];
+
+                //Validation section.
+                // add vars to validate, methods for validations required, email, letters-only, letters-numbers-only, numbers-only
+
+                params.push({'field': 'name', 'typeValidation': 'required', 'value': me.name});
+                params.push({'field': 'name', 'typeValidation': 'letters-only', 'value': me.name});
+                params.push({'field': 'town', 'typeValidation': 'required', 'value': me.townId});
+                params.push({'field': 'file', 'typeValidation': 'not-empty', 'value': this.$refs.file.files});
+
+                //call validate global function for validate params variable
+                if (!me.$validate(params)) {
+                    return;
+                }
+
+                //if validate is ok, create formdata for insert element
+                let formData = new FormData();
+                formData.append('name', this.name);
+                formData.append('town_id', this.townId);
+
+                //append the pictures to form data
+                for (var i = 0; i < this.$refs.file.files.length; i++) {
+                    let file = this.$refs.file.files[i];
+                    console.log(file);
+                    formData.append('files[' + i + ']', file);
+                }
+                //post form to controller route
+                axios.post('/team/store', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                }).then(function (response) {
+                    me.closeModal();
+                    me.$showMessageToast('success', 'insertados');
+                    me.list(1, '', 'name');
+                    $("#file").fileinput('reset');
+                    me.arrayPhotos = [];
+                })
+                    .catch(function (error) {
+                        me.$showMessageToast('error', 'insertar');
+                        console.log(error);
+                    });
+            },
+             //update method
+            update() {
+                let me = this;
+                let params = [];
+                //if have no image in array photo, put in new photos from file input.
+                if (this.arrayPhotos.length == 0) {
+                    if (me.$refs.file.files.length != 0) {
+                        for (var i = 0; i < me.$refs.file.files.length; i++) {
+                            me.arrayPhotos[i] = me.$refs.file.files[i];
+                            console.log(file);
+                        }
+                    }
+                }
+                //Validation section.
+                // add vars to validate, methods for validations required, email, letters-only, letters-numbers-only, numbers-only
+                params.push({'field': 'name', 'typeValidation': 'required', 'value': me.name});
+                params.push({'field': 'name', 'typeValidation': 'letters-only', 'value': me.name});
+                params.push({'field': 'town', 'typeValidation': 'required', 'value': me.townId});
+                params.push({'field': 'file', 'typeValidation': 'not-empty', 'value': me.arrayPhotos});
+                //call validate global function for validate params variable
+                if (!me.$validate(params)) {
+                    return;
+                }
+                //if validate is ok, create formdata for insert element
+                let formData = new FormData();
+                formData.append('id', me.id);
+                formData.append('name', me.name);
+                formData.append('town_id', me.townId);
+                //append the pictures to form data
+                for (var i = 0; i < me.arrayPhotos.length; i++) {
+                    let file = me.arrayPhotos[i];
+                    console.log(file);
+                    formData.append('files[' + i + ']', file);
+                }
+                axios.post('/team/update', formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    },
+                }).then(function (response) {
+                    me.$destroyImage();//delete old pictures relationships
+                    me.arrayPhotos = [];
+                    me.arrayForDeletePic = [];
+                    me.closeModal();
+                    me.$showMessageToast('success', 'modificado');
+                    me.list(1, '', 'name');
+                    $("#file").fileinput('reset');
+
+                })
+                    .catch(function (error) {
+                        me.$showMessageToast('error', 'modificar');
+                        console.log(error);
+                    });
+            },
+
+
+
+            closeModal() {
+                var me = this;
+                me.modal = 0;
+                me.modalTitle = '';
+                me.name = '';
+                me.stateId = '';
+                me.cityId = '';
+                me.townId = '';
+                me.arrayPhotos = [];
+                me.arrayForDeletePic = [];
+                $("#file").fileinput('reset');
+                this.$clearAllErrors();
+            },
+            openModal(action, data = []) {
+                var me = this;
+                switch (action) {
+                    case "insert":
+                        me.modal = 1;
+                        me.name = '';
+                        me.stateId = '';
+                        me.cityId = '';
+                        me.townId = '';
+                        me.modalTitle = 'Insertar Equipo';
+                        me.actionType = 1;
+                        $("#file").fileinput({
+                            theme: 'fas',
+                            language: 'es',
+                            showUpload: false,
+                            allowedFileExtensions: ['jpg', 'png', 'gif'],
+                            overwriteInitial: false,
+                            maxFileSize: 2048,
+                            browseClass: "btn btn-primary",
+                        });
+                        break;
+                    case "update":
+                        me.modal = 1;
+                        me.id = data.id;
+                        me.name = data.name;
+                        me.stateId = data.state.id;
+                        me.cityId = data.city.id;
+                        me.townId = data.town.id;
+                        me.arrayPhotos = data.logo;
+                        me.modalTitle = 'Actualizar Equipo';
+                        me.actionType = 2;
+                        this.$getStates();
+                        this.$getCitiesByState(data.state.id);
+                        this.$getTownsByCity(data.city.id);
+                        $("#file").fileinput({
+                            theme: 'fas',
+                            language: 'es',
+                            showUpload: false,
+                            allowedFileExtensions: ['jpg', 'png', 'gif'],
+                            overwriteInitial: false,
+                            maxFileSize: 2048,
+                            browseClass: "btn btn-primary",
+                        });
+                        break;
+                }
+            },
+        },
+        mounted() {
+            this.list(1, this.find, this.criteria);
+            this.$getStates();
+
+            //initialize select2 groups and fileinputs
+            $('.select2').select2();
+            $("#file").fileinput({
+                theme: 'fas',
+                language: 'es',
+                showUpload: false,
+                allowedFileExtensions: ['jpg', 'png', 'gif'],
+                overwriteInitial: false,
+                maxFileSize: 2048,
+                browseClass: "btn btn-primary",
+            });
+        }
+    }
+</script>
+<style>
+    .modal-content {
+        width: 100% !important;
+        position: absolute !important;
+        overflow: hidden;
+        margin-top: 5rem;
+    }
+
+    .show-modal {
+        display: list-item !important;
+        opacity: 1 !important;
+        position: absolute !important;
+        background-color: #3c29297a !important;
+    }
+
+    .div-error {
+        display: flex;
+        justify-content: center;
+    }
+
+    .text-error {
+        color: red !important;
+    }
+
+    .show-photo-uploader {
+        display: none;
+        /*pointer-events: none !important;*/
+        /*opacity: 25%;*/
+
+    }
+
+    .ul-list-items {
+        display: flex;
+        margin: 0;
+        list-style: none;
+        padding: 0;
+    }
+
+    .push {
+        margin-left: auto;
+    }
+
+    .filter-button {
+        background-color: #343a40;
+        border: 0;
+    }
+
+    .fa-caret-down {
+        font-size: 15px;
+        color: white;
+    }
+
+    .option-buttons-table {
+        display: flex;
+        margin: 0;
+        list-style: none;
+        padding: 0;
+    }
+
+    li {
+        list-style: none;
+    }
+
+</style>
+

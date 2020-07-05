@@ -1,0 +1,10 @@
+  //codeigniter 3 model get method example
+
+  public function get_reportes()
+    {
+        $this->db->select('r.id, r.tipo, r.agencia, r.codigo, r.municipio, r.empresa, r.id_form, u.email');
+        $this->db->from('reporte r');
+        $this->db->join('users u','u.id = r.usuario');
+        $res =  $this->db->get();
+        return $res->result();
+    }

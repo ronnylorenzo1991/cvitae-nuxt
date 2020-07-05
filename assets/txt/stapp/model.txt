@@ -1,0 +1,108 @@
+ //Symfony apps can use model class and repositories, or not. In this example,
+ //we used this model method for add entities on a specific bundle.
+ 
+ public function addEntity(array $params)
+    {
+        //get contract reference
+        $contractsDocs = $this->getReference('CommercialBundle:Contracts', $params[ 'contract' ]);
+
+        //get offers documents reference
+        /** @var OfferDocs $statement */
+        $statement = $this->getReference('CommercialBundle:OfferDocs', $params['Ostatements']);
+
+        //get closed offers reference and extra data
+        /** @var Offer $offers */
+        $offers = $this->getReference('CommercialBundle:Offer', (int) $params[ 'closingOffer' ]);
+        if($offers->getConstStatus() == Constant::DOCS_STATUS_CLOSED)
+        {
+            /** @var OfferExtra $offers_extra */
+                $offers_extra = $offers->getOfferExtra();
+        }
+
+        //is have not extra data, no contracted and no pending
+        if (is_null($offers_extra)) {
+            $contracted = 0;
+            $pending =0;
+        } else {
+            $contracted = $offers_extra->getAmountCFRCPT() + $offers_extra->getOtherFinancialExpenses();
+            $pending = $contracted;
+        }
+
+        //create contract object
+        /** @var ContractDocument $contract */
+        $contract = $this->contractFactory
+            ->create()
+            ->setBaseContract($params['baseContract'])
+            ->addParent($statement)
+            ->setContracts($contractsDocs)
+            ->setConsecutiveNumber($params[ 'consecutiveNumber' ])
+            ->setPaymentConditions($params[ 'paymentConditions' ])
+            ->setRecordDate($params['recordDate'])
+            ->setContracted($contracted)
+            
+
+        //get validations errors
+        $errors = $this->validator->validate($contract, [Constraint::DEFAULT_GROUP, ConstraintsValidator::ADD_GROUP]);
+
+        //get contract clauses
+        $contractsDocsClauses = $contract->getContracts()->getContractsClauses()->getValues();
+
+        //get contract extradata
+        $extraData = $this->otherData($contract,$params);
+        $text=$extraData['clause0'];
+
+        //set header contract
+        $contract->setHeaderContract($text);
+
+        //adding clauses to new contract
+        foreach($contractsDocsClauses as $contractsDocsClause)
+        {
+            $contractDocumentClause = new ContractDocumentClauses();
+            $clause = $contractsDocsClause->getClause();
+            $contractDocumentClause->setClause($clause);
+            $contractDocumentClause->setObservations($clause->getDescription());
+            $contractDocumentClause->setContractDocument($contract);
+            $contract->addContractDocumentClause($contractDocumentClause);
+        }
+        //if the contract have base contract, add information reference.
+        if($contract->getBaseContract())
+        {
+            $closedOfferProvider = $this->getCoreRepository()->getOfferStatementRepository()
+                ->getClosedOfferProvider($params[ 'Ostatements' ]);
+            $baseContract = $this->getCoreRepository()->getBaseContractRepository()->findByProvider($closedOfferProvider[0]['supplierId'])[0];
+            $baseContractClauses = $baseContract->getBaseContractClauses()->getValues();
+
+            //add base contract clauses
+            foreach($baseContractClauses as $baseContractClause)
+            {
+                $contractDocumentClause = new ContractDocumentClauses();
+                $clause = $baseContractClause->getClause();
+                $contractDocumentClause->setClause($clause);
+                $contractDocumentClause->setObservations($baseContractClause->getObservations());
+                $contractDocumentClause->setContractDocument($contract);
+                $contract->addContractDocumentClause($contractDocumentClause);
+            }
+        }
+
+        //if have not errors add entity
+        if($errors->has(0)) {
+            throw new \Exception($errors->get(0)->getMessage());
+        }
+
+        try {
+
+            $this->entityManager->persist($contract);
+            $this->entityManager->flush();
+
+            if($params['flag'] == true)
+            {
+                $event = new DocumentEvents($contract);
+                $this->eventDispacher->dispatch(ComercialEvents::CONTRACT_CREATED, $event);
+            }
+
+        } catch(\Exception $e) {
+            return FALSE;
+        }
+
+        return TRUE;
+    }

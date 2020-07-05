@@ -1,0 +1,80 @@
+{
+  "stapp": {
+    "id": "stapp",
+    "title": "Symfony & twig App",
+    "description": "Web applications, with framework symfony for backend and .twig for the frontend. Administration panel based on AdminLTE or aboriginal.",
+    "fileTypes":{
+      "controller": "PHP",
+      "model": "PHP",
+      "view": "TWIG"
+    },
+    "images": {
+      "0": {
+        "url": "gallery1.jpg"
+      },
+      "1": {
+        "url": "gallery2.jpg"
+      },
+      "2": {
+        "url": "gallery3.jpg"
+      },
+      "3": {
+        "url": "gallery4.jpg"
+      }
+    }
+  },
+  "lavapp": {
+    "id": "lavapp",
+    "title": "laravel & Vue.js App",
+    "description": "Web application, with framework laravel for backend and vue.js for the frontend.",
+    "fileTypes":{
+      "controller": "PHP",
+      "model": "PHP",
+      "view": "JAVASCRIPT-VUE"
+    },
+    "images": {
+      "0": {
+        "url": "gallery1.jpg"
+      },
+      "1": {
+        "url": "gallery2.jpg"
+      }
+    }
+  },
+  "nuxexp": {
+    "id": "nuxexp",
+    "title": "Nuxt & Node Express App",
+    "description": "Web application, with Node Express for backend and Nuxt.js javascript framework for the frontend.",
+    "fileTypes":{
+      "controller": "JAVASCRIPT",
+      "model": "JAVASCRIPT-API",
+      "view": "JAVASCRIPT-VUE"
+    },
+    "images": {
+      "0": {
+        "url": "gallery1.jpg"
+      },
+      "1": {
+        "url": "gallery2.jpg"
+      }
+    }
+  },
+  "codeigniter": {
+    "id": "codeigniter",
+    "title": "Codeigniter App",
+    "description": "Web application, with PHP framework codeigniter",
+    "fileTypes":{
+      "controller": "PHP",
+      "model": "PHP",
+      "view": "PHP"
+    },
+    "images": {
+      "0": {
+        "url": "gallery1.jpg"
+      },
+      "1": {
+        "url": "gallery2.jpg"
+      }
+    }
+  }
+}

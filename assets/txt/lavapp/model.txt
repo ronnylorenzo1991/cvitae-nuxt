@@ -1,0 +1,24 @@
+//laravel app team model example
+
+class Team extends Model
+{
+    use Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+
+    protected $fillable = ['name,logo,town_id'];
+
+    public function photos()
+    {
+        return $this->morphMany(Photo::class, 'photoable');
+    }
+
+    public function town()
+    {
+        return $this->belongsTo(Town::class);
+    }
+}

@@ -1,0 +1,31 @@
+    //Laravel controller store method example for teams
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        if (!$request->ajax()) return redirect('/');
+
+        $this->validate($request, [
+            'file.*' => 'required',
+            'file.*' => 'mimes:jpg,png'
+        ]);
+
+        $value = new Team();
+        $value->name = $request->name;
+        $value->town_id = $request->town_id;
+        $value->save();
+
+        foreach ($request->file() as $files) {
+            foreach ($files as $file) {
+                $url = $file->store('public');
+                $photo = new Photo();
+                $photo->url = Storage::url($url);
+                $value->photos()->save($photo);
+            }
+        }
+    }

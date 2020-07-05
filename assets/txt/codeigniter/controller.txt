@@ -1,0 +1,29 @@
+ //codeigniter 3 controller list method example
+
+ public function list_form()
+    {
+        $user_group = $this->ion_auth->get_users_groups($this->mUser->id)->result()[0]->name;
+        $user_id= $this->session->userdata('user_id');
+        $result=[];
+       switch ($user_group){
+           case 'Contador':
+               $result = $this->Form_model->get_rep_by_user($user_id);
+               echo json_encode($result);
+               break;
+           case 'Supervisor':
+               $states = $this->users->get_user_user_municipios($user_id);
+               foreach($states as $state){
+                   $a= $state->municipio_id;
+                   $reps = $this->Form_model->get_rep_by_state($a);
+                   $result = array_merge($result,$reps);
+               }
+
+               echo json_encode($result);
+               break;
+           case 'Supervisor General':
+               $result = $this->Form_model->get_reportes();
+               echo json_encode($result);
+               break;
+       }
+
+    }
