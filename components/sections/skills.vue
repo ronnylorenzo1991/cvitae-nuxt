@@ -2,41 +2,30 @@
     <!-- About Section -->
     <section id="skills">
         <div class="container">
-            <h2 class="text-white">skills</h2>
-            <h3 style="text-transform: capitalize">and thechnologies </h3>
+            <h2 class="text-white">{{$t('skills')}}</h2>
+            <h3 style="text-transform: capitalize">{{$t('and_technologies')}}</h3>
             <div class="box">
                     <div>
                         <devcode style="width: 35px; margin-right: 5px"></devcode>
-                        <h2 class="text-white segment-title">Developer knowledge</h2>
-                        <p class="resume text-white">Work with technologies such as php, javascript, html, css,
-                            suported
-                            by the use of frameworks like Symfony, laravel, codeigniter, for php, nuxt, vue, extend
-                            and
-                            react
-                            for javascript and toolkits desing
-                            such as bootstrap, css grid, css flexbox.
-                        </p>
+                        <h2 class="text-white segment-title">{{$t('developer_knowledge')}}</h2>
+                        <p class="resume text-white">{{$t('developer_knowledge_text')}}</p>
                     </div>
                     <div>
                         <database style="width: 35px; margin-right: 5px"></database>
-                        <h2 class="text-white segment-title">Databases</h2>
-                        <p class="resume text-white">Work with technologies such as mySQL, postgreeSQL, MariaDB,
-                            mongoDB, using managers like phpmyadmin, pgadmin, navicat. </p>
+                        <h2 class="text-white segment-title">{{$t('databases')}}</h2>
+                        <p class="resume text-white">{{$t('databases_text')}} </p>
                     </div>
 
                     <div>
                         <pc style="width: 35px; margin-right: 5px"></pc>
-                        <h2 class="text-white segment-title">Operating Systems</h2>
-                        <p class="resume text-white">Work with diferents operating systems like windows and linux.
-                            Specifically at work with ubuntu, kubuntu and kali</p>
+                        <h2 class="text-white segment-title">{{$t('operating_systems')}}</h2>
+                        <p class="resume text-white">{{$t('operating_systems_text')}}</p>
                     </div>
 
                     <div>
                         <github style="width: 35px; margin-right: 5px"></github>
-                        <h2 class="text-white segment-title">Version Control</h2>
-                        <p class="resume text-white">Work with technologies for controling branches and version
-                            controls
-                            such as git.</p>
+                        <h2 class="text-white segment-title">{{$t('version_control')}}</h2>
+                        <p class="resume text-white">{{$t('version_control_text')}}</p>
                     </div>
             </div>
         </div>

@@ -2,7 +2,10 @@
   "stapp": {
     "id": "stapp",
     "title": "Symfony & twig App",
-    "description": "Web applications, with framework symfony for backend and .twig for the frontend. Administration panel based on AdminLTE or aboriginal.",
+    "description":{
+      "en":"Web applications, with framework symfony for backend and .twig for the frontend. Administration panel based on AdminLTE or aboriginal.",
+      "es":"Aplicaciones web,utilizando el framework symfony para el backend, y twig para el frontend. Panel de administración basado en AdminLTE o nativo."
+    },
     "fileTypes":{
       "controller": "PHP",
       "model": "PHP",
@@ -26,7 +29,10 @@
   "lavapp": {
     "id": "lavapp",
     "title": "laravel & Vue.js App",
-    "description": "Web application, with framework laravel for backend and vue.js for the frontend.",
+    "description":{
+      "en":"Web application, with framework laravel for backend and vue.js for the frontend.",
+      "es":"Aplicaciones web,utilizando el framework laravel para el backend, y vue.js para el frontend "
+    },
     "fileTypes":{
       "controller": "PHP",
       "model": "PHP",
@@ -45,6 +51,10 @@
     "id": "nuxexp",
     "title": "Nuxt & Node Express App",
     "description": "Web application, with Node Express for backend and Nuxt.js javascript framework for the frontend.",
+    "description":{
+      "en":"Web application, with Node Express for backend and Nuxt.js javascript framework for the frontend.",
+      "es":"Aplicaciones web,utilizando el framework de javascript Node Express para el backend, y Nuxt.js para el frontend."
+    },
     "fileTypes":{
       "controller": "JAVASCRIPT",
       "model": "JAVASCRIPT-API",
@@ -63,6 +73,10 @@
     "id": "codeigniter",
     "title": "Codeigniter App",
     "description": "Web application, with PHP framework codeigniter",
+    "description":{
+      "en":"Web application, with PHP framework codeigniter. Administration panel based on AdminLTE or aboriginal.",
+      "es":"Aplicacion web, usando framework php codeigniter. Panel de administración basado en AdminLTE."
+    },
     "fileTypes":{
       "controller": "PHP",
       "model": "PHP",

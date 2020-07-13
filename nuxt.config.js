@@ -37,7 +37,7 @@ export default {
     ** https://nuxtjs.org/guide/plugins
     */
     plugins: [
-        '~/plugins/custom.js'
+        '~/plugins/i18n.js'
     ],
     /*
     ** Auto import components

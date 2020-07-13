@@ -5,12 +5,12 @@
             <div class="fs-content">
 
                 <div class="fs-content-top">
-                    <h1>Hello, i am <span style="text-decoration-line: underline ">Ronny García Lorenzo</span>
+                    <h1>{{ $t('hellomsg') }} <span style="text-decoration-line: underline ">Ronny García Lorenzo</span>
                     </h1>
-                    <h3>Welcome to my <span style="text-decoration-style: double;">CV</span></h3>
+                    <h3>{{ $t('welcomemsg') }}</h3>
                 </div>
                 <div class="fs-content-bottom">
-                    <button class="btn btn-primary">Download CV</button>
+                    <button class="btn btn-primary">{{ $t('download') }} CV</button>
                 </div>
             </div>
         </div>

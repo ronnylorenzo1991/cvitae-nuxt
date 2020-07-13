@@ -14,7 +14,7 @@
                       svg: HomeSvgIcon,
                     },
                    {
-                      name: 'about me',
+                      name: 'about',
                       url: 'about',
                       svg: UserSvgIcon,
                     },
@@ -110,6 +110,7 @@
             toggleSideBar() {
                 this.toggle = !this.toggle;
             },
+
         },
         data() {
 

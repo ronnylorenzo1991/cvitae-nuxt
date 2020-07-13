@@ -12,29 +12,29 @@
                             <hr>
 
                             <tabs >
-                                <tab name="Description" :selected="true">
+                                <tab :name="$t('description')" :selected="true">
                                     <div class="modal-body">
                                         <carousel
                                                 :images ="itemData[0].images"
                                         ></carousel>
                                         <slot name="body">
-                                            <p v-text="itemData[0].description"></p>
+                                            <p v-text="itemData[0].description[this.$i18n.locale]"></p>
                                         </slot>
                                     </div>
                                 </tab>
-                                <tab name="Controller Code" >
+                                <tab :name="$t('controller_code')"  >
                                     <pre :rel="itemData[0].fileTypes.controller">
                                         <code class="language-php" v-text="loadText(itemData[0].id,'controller')">
                                         </code>
                                     </pre>
                                 </tab>
-                                <tab name="Model code">
+                                <tab :name="$t('model_code')" >
                                     <pre :rel="itemData[0].fileTypes.model">
                                         <code class="language-php" v-text="loadText(itemData[0].id,'model')">
                                         </code>
                                     </pre>
                                 </tab>
-                                <tab name="View Code">
+                                <tab :name="$t('view_code')" >
                                     <pre :rel="itemData[0].fileTypes.view">
                                         <code class="language-twig" v-text="loadText(itemData[0].id,'view')">
                                         </code>
@@ -45,13 +45,10 @@
                         </slot>
                     </div>
 
-
-
                     <div class="modal-footer">
                         <slot name="footer">
-                            default footer
-                            <button class="modal-default-button" @click="$emit('close')">
-                                OK
+                            <button class="btn btn-primary modal-default-button" @click="$emit('close')">
+                               close
                             </button>
                         </slot>
                     </div>
@@ -113,6 +110,9 @@
     .modal-wrapper {
         display: block;
         vertical-align: middle;
+    }
+    .modal-footer {
+        margin-bottom: 45px;
     }
 
     .modal-container {

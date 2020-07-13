@@ -3,8 +3,8 @@
     <section id="services">
 
         <div class="container">
-            <h2 class="text-white">services</h2>
-            <h3 style="text-transform: capitalize">and code examples </h3>
+            <h2 class="text-white">{{$t('services')}}</h2>
+            <h3 style="text-transform: capitalize">{{$t('and_code_examples')}} </h3>
             <div class="box-excodes">
                 <div v-for="(item, index) in excodesItems" :key="index">
                     <h2 v-text="item.title"></h2>

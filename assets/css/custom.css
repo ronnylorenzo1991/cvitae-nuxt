@@ -1336,7 +1336,7 @@ footer-block:first-child dd, .footer-block:first-child dd a {
     .sidebar-nav {
         position: revert;
         top: 0;
-        width: 150px;
+        width: 200px;
         margin: 7em 0em 0em 0em;
         list-style: none;
         padding-left: 0;
@@ -1422,6 +1422,7 @@ footer-block:first-child dd, .footer-block:first-child dd a {
 
 .segment-title {
     font-size: 25px;
+    text-transform: capitalize;
 }
 
 .position-fixed {
@@ -1448,11 +1449,6 @@ footer-block:first-child dd, .footer-block:first-child dd a {
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    .btn {
-        transition: none;
-    }
-}
 
 .btn:hover {
     color: #212529;
@@ -1495,7 +1491,7 @@ fieldset:disabled a.btn {
     color: #ffffff;
     background-color: #0e945e;
     border-color: #0e945e;
-    box-shadow: none, 0 0 0 0 rgba(36, 185, 133, 0.5);
+    box-shadow: 0 0 0 0 rgba(36, 185, 133, 0.5);
 }
 
 .btn-primary.disabled, .btn-primary:disabled {
