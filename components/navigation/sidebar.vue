@@ -1,29 +1,26 @@
 <template>
     <div id="sidebar-wrapper" class="position-fixed" @mouseover="$emit('toggleSideBar')"  @mouseout="$emit('toggleSideBar')" >
-        <!--<lang-toggle @changeLang="changeLanguage($event)"></lang-toggle>-->
-        <transition name="fade"  mode="out-in" >
-            <button v-if="lang=='es'" @click="changeLanguage('en')">EN</button>
-            <button v-if="lang=='en'" @click="changeLanguage('es')">ES</button>
-        </transition>
         <ul  class="sidebar-nav">
-
-
-            <li v-for="(item, index) in menuItems" :key="index" tabindex="0"   >
+            <li v-for="(item, index) in menuItems" :key="index" tabindex="0">
                 <a class="nav-link" v-smooth-scroll="{duration:1000, offset: -50}"
                         :href="'#' + item.url">
-                    <component :is="item.svg" style="width: 35px; margin-right: 5px"/>
+                    <component :is="item.svg" style="width: 22%; margin-right: 5px"/>
                     <span class="capitalize">{{ $t(item.name) }}</span>
                 </a>
             </li>
         </ul>
+        <transition name="fade"  mode="out-in" >
+            <a class="sidebar-language"  v-for="(item, index) in langItems" :key="index" tabindex="0" v-if="lang!=item.lang"
+               @click="changeLanguage(item.lang)"> <component :is="item.svg"
+                                                              style="width: 35px; padding-top: 50px;margin-left: 15px;"/></a>
+        </transition>
     </div>
 </template>
-
 <script>
 
     import Vue from 'vue'
     import vueSmoothScroll from 'vue2-smooth-scroll'
-    import langToggle from '../toggle/lang-toggle'
+    import langToggleSwitch from '../toggle/lang-toggle'
 
     Vue.use(vueSmoothScroll)
 
@@ -34,13 +31,18 @@
                 type: Array,
                 default: () => [],
             },
+            'lang-items': {
+                // Example: [{ name: 'Page 1', url: 'page1', svg: 'component' }]
+                type: Array,
+                default: () => [],
+            },
         },
         components:{
-            langToggle
+            langToggleSwitch
         },
         data(){
             return{
-                langToggle,
+                langToggleSwitch,
                 lang:'en',
             }
         },
@@ -56,5 +58,10 @@
 </script>
 
 <style scoped>
-
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s
+    }
+    .fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+        opacity: 0
+    }
 </style>

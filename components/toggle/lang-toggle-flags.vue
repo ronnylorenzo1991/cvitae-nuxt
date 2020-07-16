@@ -9,7 +9,7 @@
 
 <script>
     export default {
-        name: "lang-toggle-switch"
+        name: "lang-toggle-flags"
     }
 </script>
 

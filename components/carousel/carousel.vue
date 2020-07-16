@@ -11,7 +11,7 @@
                 <div class="inner">
                     <article v-for="(image, index)  in images"  :id="'article'+index">
                         <content :select="'img:nth-of-type('+index+')'">
-                            <img :src="require('~/assets/img/assets/'+image.url)">
+                            <img :src="require('~/assets/img/carousel/'+itemId+'/'+image.url)">
                         </content>
                     </article>
                 </div> <!-- .inner -->
@@ -28,6 +28,9 @@
             'images': {
                 type: Object,
             },
+            'item-id': {
+
+            }
         },
         name: "carrousel",
        created() {

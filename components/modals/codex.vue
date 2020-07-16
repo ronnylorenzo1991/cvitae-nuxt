@@ -16,6 +16,7 @@
                                     <div class="modal-body">
                                         <carousel
                                                 :images ="itemData[0].images"
+                                                :item-id ="itemData[0].id"
                                         ></carousel>
                                         <slot name="body">
                                             <p v-text="itemData[0].description[this.$i18n.locale]"></p>

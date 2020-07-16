@@ -39,13 +39,46 @@
                       svg: PhoneSvgIcon,
                     },
                     ]"
+                     :lang-items="[
+                       {
+                      lang: 'en',
+                      svg: EnglishSvgIcon,
+                    },
+                     {
+                      lang: 'es',
+                      svg: SpanishSvgIcon,
+                    },
+                     ]"
             ></sidebar>
             <!--Home section header-->
             <home></home>
             <!--About section header-->
             <about></about>
             <!-- Skills Section -->
-            <skills></skills>
+            <skills
+                    :skills="[
+                    {
+                      title: $t('developer_knowledge'),
+                      text: $t('developer_knowledge_text'),
+                      svg: DevcodeSvgIcon,
+                    },
+                    {
+                      title: $t('databases'),
+                      text: $t('databases_text'),
+                      svg: DatabaseSvgIcon,
+                    },
+                     {
+                      title: $t('operating_systems'),
+                      text: $t('operating_systems_text'),
+                      svg: PcSvgIcon,
+                    },
+                    {
+                      title: $t('version_control'),
+                      text: $t('version_control_text'),
+                      svg: GithubSvgIcon,
+                    },
+                     ]"
+            ></skills>
             <!-- excode Section -->
             <excode
                     :excodes-items="dataJson"
@@ -77,6 +110,11 @@
     import HomeSvgIcon from '~/components/svgIcons/homeMenu';
     import PortfolioSvgIcon from '~/components/svgIcons/Portfolio';
     import DevcodeSvgIcon from '~/components/svgIcons/Devcode';
+    import EnglishSvgIcon from '~/components/svgIcons/english';
+    import SpanishSvgIcon from '~/components/svgIcons/spanish';
+    import GithubSvgIcon from "~/components/svgIcons/github";
+    import DatabaseSvgIcon from "~/components/svgIcons/database";
+    import PcSvgIcon from "~/components/svgIcons/pc";
 
     //sections
     import Navbar from "../components/navigation/navbar";
@@ -97,12 +135,17 @@
 
             //svg icons
             ColoursSvgIcon,
+            EnglishSvgIcon,
+            SpanishSvgIcon,
             PhoneSvgIcon,
             UserSvgIcon,
             EditSvgIcon,
             HomeSvgIcon,
             PortfolioSvgIcon,
             DevcodeSvgIcon,
+            PcSvgIcon,
+            DatabaseSvgIcon,
+            GithubSvgIcon,
             Sidebar,
             Navbar
         },
@@ -117,15 +160,20 @@
             return {
                 ColoursSvgIcon,
                 PhoneSvgIcon,
+                EnglishSvgIcon,
+                SpanishSvgIcon,
                 EditSvgIcon,
                 HomeSvgIcon,
                 UserSvgIcon,
                 PortfolioSvgIcon,
                 DevcodeSvgIcon,
+                PcSvgIcon,
+                DatabaseSvgIcon,
+                GithubSvgIcon,
                 Sidebar,
                 Navbar,
                 toggle: false,
-                dataJson:DataJson,
+                dataJson: DataJson,
             };
         },
         head() {
