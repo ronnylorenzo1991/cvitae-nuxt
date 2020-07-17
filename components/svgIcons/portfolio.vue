@@ -1,5 +1,5 @@
 <template>
-  <svgIcon :id="'colours'">
+  <svgIcon :id="'portfolio'">
     <g
             id="g81"
             transform="matrix(0.63395175,0,0,0.63149545,16.210252,32.589642)"><path
