@@ -88,7 +88,7 @@
             <contact></contact>
             <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
             <div class="scroll-to-top d-lg-none position-fixed ">
-                <a class="js-scroll-trigger d-block text-center text-white rounded" href="#">
+                <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top">
                     <i class="fa fa-chevron-up"></i>
                 </a>
             </div>
@@ -107,9 +107,9 @@
     import PhoneSvgIcon from '~/components/svgIcons/phone';
     import UserSvgIcon from '~/components/svgIcons/user';
     import EditSvgIcon from '~/components/svgIcons/edit';
-    import PortfolioSvgIcon from '~/components/svgIcons/homeMenu';
     import HomeSvgIcon from '~/components/svgIcons/homeMenu';
-    import DevcodeSvgIcon from '~/components/svgIcons/homeMenu';
+    import PortfolioSvgIcon from '~/components/svgIcons/Portfolio';
+    import DevcodeSvgIcon from '~/components/svgIcons/Devcode';
     import EnglishSvgIcon from '~/components/svgIcons/english';
     import SpanishSvgIcon from '~/components/svgIcons/spanish';
     import GithubSvgIcon from "~/components/svgIcons/github";
