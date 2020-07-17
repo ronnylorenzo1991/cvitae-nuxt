@@ -108,8 +108,8 @@
     import UserSvgIcon from '~/components/svgIcons/user';
     import EditSvgIcon from '~/components/svgIcons/edit';
     import HomeSvgIcon from '~/components/svgIcons/homeMenu';
-    import PortfolioSvgIcon from '~/components/svgIcons/Portfolio';
-    import DevcodeSvgIcon from '~/components/svgIcons/Devcode';
+    import PortfolioSvgIcon from '~/components/svgIcons/portfolio';
+    import DevcodeSvgIcon from '~/components/svgIcons/devcode';
     import EnglishSvgIcon from '~/components/svgIcons/english';
     import SpanishSvgIcon from '~/components/svgIcons/spanish';
     import GithubSvgIcon from "~/components/svgIcons/github";
