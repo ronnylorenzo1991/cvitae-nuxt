@@ -10,7 +10,7 @@
                     <h3>{{ $t('welcomemsg') }}</h3>
                 </div>
                 <div class="fs-content-bottom">
-                    <button class="btn btn-primary">{{ $t('download') }} CV</button>
+                    <a class="btn btn-primary" :href="'cv-'+this.$i18n.locale+'.pdf'">{{ $t('get_in') }} PDF</a>
                 </div>
             </div>
         </div>

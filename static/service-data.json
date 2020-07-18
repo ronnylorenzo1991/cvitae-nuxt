@@ -4,7 +4,7 @@
     "title": "Symfony & twig App",
     "description":{
       "en":"Web applications, using the symfony framework for the backend, and twig for the frontend. Using the EasyAdmin administration bundle, a powerful tool that will allow you to generate stylized CRUDS under Bootstrap4 standards,  as well as FosUser Bundle for user administration.",
-      "es":"Aplicaciones web,utilizando el framework symfony para el backend, y twig para el frontend. Utilizando el bundle para administración EasyAdmin, poderosa herramienta que permitirág generar CRUDS estilizados bajo los estándares de Bootstrap4, así como FosUser Bundle para la administración de usuarios."
+      "es":"Aplicaciones web, utilizando el framework Symfony para el backend, y Twig para el frontend. Utilizando el bundle para administración EasyAdmin, poderosa herramienta que permitirá generar CRUDS estilizados bajo los estándares de Bootstrap 4, así como Fos User Bundle para la administración de usuarios."
     },
     "fileTypes":{
       "controller": "PHP",
@@ -31,7 +31,7 @@
     "title": "laravel & Vue.js App",
     "description":{
       "en":"Web applications, using the laravel framework for the backend, and vue.js for the frontend. You can use administration templates such as AdminLTE, Stisla or another that provides a stylized view and pleasing for any user, using all the potential of a framework such as vue, you can achieve great designs.",
-      "es":"Aplicaciones web,utilizando el framework laravel para el backend, y vue.js para el frontend. Puede utilizarse platillas de administración como AdminLTE, Stisla u otra que aporte una vista estilizada y agradable a la vista de cualquier usuario, utilizando todas las potencialidades de un framework como vue, se pueden lograr estupendos diseños. "
+      "es":"Aplicaciones web, utilizando el framework Laravel para el backend, y Vue para el frontend. Puede utilizarse platillas de administración como AdminLTE, Stisla u otra que aporte una vista estilizada y agradable a la vista de cualquier usuario, utilizando todas las potencialidades de un framework como Vue, se pueden lograr estupendos diseños basados en animaciones."
     },
     "fileTypes":{
       "controller": "PHP",
@@ -58,7 +58,7 @@
     "title": "Nuxt & Node Express App",
     "description":{
       "en":"Web applications, using the Node Express javascript framework for the backend, and Nuxt.js for the frontend. Seindo Nuxt the evolution of vue, allows all its virtues, as well as the implementation of animations and designs under Bootstrap standards, with template engines such as CoreUI, AdminLTE or other.",
-      "es":"Aplicaciones web,utilizando el framework de javascript Node Express para el backend, y Nuxt.js para el frontend. Seindo Nuxt la evolución de vue, permite todas sus virtudes, asi como la implementación de animaciones y diseños bajo los estandares de Bootstrap, con motores de plantillas como CoreUI, AdminLTE u otro."
+      "es":"Aplicaciones web, utilizando el framework de JavaScript Node Express para el backend, y Nuxt para el frontend. Siendo Nuxt la evolución de Vue, permite todas sus virtudes, así como la implementación de animaciones y diseños bajo los estándares de Bootstrap, con motores de plantillas como CoreUI, AdminLTE u otro."
     },
     "fileTypes":{
       "controller": "JAVASCRIPT",
@@ -84,8 +84,8 @@
     "id": "codeigniter",
     "title": "Codeigniter App",
     "description":{
-      "en":"Aplicacion web, usando framework php codeigniter, de una connotación mas sencilla y ligera. Puede integrarse con las mas actuales versiones de Bootstrap, y utilizar motores de platillas para la administración como CoreUI, AdminLTE u otra.",
-      "es":"Web application, using php codeigniter framework, with a simpler and lighter connotation. It can be integrated with the latest versions of Bootstrap, and use template engines for administration such as CoreUI, AdminLTE or other."
+      "en":"Web application, using php codeigniter framework, with a simpler and lighter connotation. It can be integrated with the latest versions of Bootstrap, and use template engines for administration such as CoreUI, AdminLTE or other.",
+      "es":"Aplicación web, usando framework php CodeIgniter, de una connotación más sencilla y ligera. Puede integrarse con las más actuales versiones de Bootstrap, y utilizar motores de platillas para la administración como CoreUI, AdminLTE u otra."
     },
     "fileTypes":{
       "controller": "PHP",
